@@ -44,3 +44,26 @@ This work is licensed under a
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+
+## Rubric criteria
+
+1. The project demonstrates an understanding of C++ functions and control structures.
+
+* This is shown in VectorOccupies from game.cpp. VectorOccupies uses a for each loop to iterate over a copy of a given vector and determine if any points are on the given x & y.
+
+2. The project makes use of references in function declarations.
+
+* In game.cpp PlaceItem on line 77 & RemoveItem on line  92 were created using pass-by-reference. Both take in a reference to a vector of SDL_Points.
+By using pass-by-reference these functions are able to modify the actual vector. Pass-by-reference allows these functions to independent to what vector is passed either a food or posion.
+
+3. Classes use appropriate access specifiers for class members.
+
+* A new private member function has been added to snake.h. An enum on like 36 of snake.h replaced the boolean growing. This enum allows the snake to be in three different body_state phases. None is the default state when the snake is moving normally, when food is reached the GrowBody is alled on the snake and it will increase in size. The snake can be set to shrinking body_state when the new public method ShrinkBody is called.
+
+4. Classes abstract implementation details from their interfaces.
+
+* game.cpp functions OpenCell (line 64), VectorOccupies (81), PlaceItem (95) as well as other functions use detailed comments to ensure clear understanding of inputs and expected behavior.
+
+5. The project uses smart pointers instead of raw pointers.
+
+* In game.h on lines 22 & 23 you will see that two vectors are created used to store SDL_Points. Instead of holding the SDL_Points directly a shared_ptr has been used.

@@ -1,6 +1,8 @@
 #include "renderer.h"
 #include <iostream>
 #include <string>
+#include <vector>
+#include <memory>
 
 Renderer::Renderer(const std::size_t screen_width,
                    const std::size_t screen_height,
@@ -38,7 +40,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, std::vector<std::shared_ptr<SDL_Point>> const &food, std::vector<std::shared_ptr<SDL_Point>> const &posion) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -49,9 +51,19 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
 
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
-  block.x = food.x * block.w;
-  block.y = food.y * block.h;
-  SDL_RenderFillRect(sdl_renderer, &block);
+  for (auto const &peice : food){
+    block.x = peice->x * block.w;
+    block.y = peice->y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
+
+  // Render posion
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+  for (auto const &peice : posion){
+    block.x = peice->x * block.w;
+    block.y = peice->y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);

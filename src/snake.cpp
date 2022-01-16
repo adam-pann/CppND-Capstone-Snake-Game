@@ -43,16 +43,35 @@ void Snake::UpdateHead() {
   head_y = fmod(head_y + grid_height, grid_height);
 }
 
+/**
+ * @brief Checks the snake_state to determine if the snake should increase, decrease, or stay the same size.
+ *        Lastly, checks if the snake is still alive.
+ *
+ * @param current_head_cell SDL_Point to the x, y position of the snake head
+ * @param prev_head_cell SDL_Point to the previous head positon. Used to determine where the body should move to.
+ */
 void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) {
   // Add previous head location to vector
   body.push_back(prev_head_cell);
 
-  if (!growing) {
+  if (snake_state == body_state::none) {
     // Remove the tail from the vector.
+    /* if (shrinking) */
     body.erase(body.begin());
-  } else {
-    growing = false;
-    size++;
+  } 
+  else if (snake_state == body_state::growing) {
+    size ++;
+    snake_state = none;
+  }
+  else if (snake_state == body_state::shrinking){
+    snake_state = none;
+    size --;
+    if (body.size() < 2){
+      alive = false;
+      return;
+    }
+    body.erase(body.begin());
+    body.erase(body.begin());
   }
 
   // Check if the snake has died.
@@ -63,7 +82,8 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   }
 }
 
-void Snake::GrowBody() { growing = true; }
+void Snake::GrowBody() { snake_state = growing; }
+void Snake::ShrinkBody() { snake_state = shrinking; }
 
 // Inefficient method to check if cell is occupied by snake.
 bool Snake::SnakeCell(int x, int y) {

@@ -6,6 +6,8 @@
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
+#include <vector>
+#include <memory>
 
 class Game {
  public:
@@ -17,7 +19,8 @@ class Game {
 
  private:
   Snake snake;
-  SDL_Point food;
+  std::vector<std::shared_ptr<SDL_Point>> food;
+  std::vector<std::shared_ptr<SDL_Point>> posion;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -26,7 +29,11 @@ class Game {
 
   int score{0};
 
-  void PlaceFood();
+  bool OpenCell(int x, int y);
+  bool VectorOccupies(std::vector<std::shared_ptr<SDL_Point>> group, int x, int y);
+  void PlaceItem(std::vector<std::shared_ptr<SDL_Point>> &items);
+  /* void PlacePosion(); */
+  void RemoveItem(std::vector<std::shared_ptr<SDL_Point>> &items, int x, int y);
   void Update();
 };
 
